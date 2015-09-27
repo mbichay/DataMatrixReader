@@ -14,8 +14,11 @@ public class BarcodeImage implements Cloneable {
 	//for elements that are white, and true for elements that are black.
 	private Boolean[][] image_data;
 
-	private int topLeftStart;
-	private int actualWidth;
+	private int start;
+	public int start() { return this.start; }
+
+	private int width;
+	public int width() { return this.width; }
 
 
 	// Default Constructor
@@ -23,6 +26,8 @@ public class BarcodeImage implements Cloneable {
 	//stuffs it all with blanks (false).
 	public BarcodeImage() {
 		this.image_data = new Boolean[BarcodeImage.MAX_HEIGHT][BarcodeImage.MAX_WIDTH];
+		this.start = 0;
+		this.width = 0;
 		for (Boolean[] row : this.image_data)
 			Arrays.fill(row,false);
 	}
@@ -32,35 +37,38 @@ public class BarcodeImage implements Cloneable {
 	//takes a 1D array of Strings and converts it to the internal 2D array of booleans. 
 	public BarcodeImage(String[] str_data) {
 		//do shit here matt
-		image_data = new Boolean[BarcodeImage.MAX_HEIGHT][BarcodeImage.MAX_WIDTH];
+		this.image_data = new Boolean[BarcodeImage.MAX_HEIGHT][BarcodeImage.MAX_WIDTH];
 		ArrayList<String> strDataTemp = new ArrayList<String>();
 		for (String str : str_data)
 			if (!str.trim().equals(""))
 				strDataTemp.add(str.trim()); // Requires Error checking
 		String[] strData = strDataTemp.toArray(new String[strDataTemp.size()]);
 		falseParityCC(strData);
+		computeSignalWidthAndScanningStart(strData);
 		insertImageData(strData);
 	}
 
 
-	//
+	// Accessor for each individual pixel.
 	public Boolean getPixel(int row, int col) {
-		// do shit here
-		if (indexInvalid(row,col))
+		if (!indexInvalid(row,col)){
 			return false;
+		}
 		return this.image_data[row][col];
 	}
 
 
+	// mutator for each individual pixel.
 	public Boolean setPixel(int row, int col, Boolean value) {
 		if (indexInvalid(row,col))
 			return false;
-
 		this.image_data[row][col] = value;
 		return true;
 	}
 
 
+	// Checks if index row and column values are invalid
+	// Helper function
 	private Boolean indexInvalid(int row, int col) {
 		if (row > BarcodeImage.MAX_HEIGHT || row < 0 || 
 			col > BarcodeImage.MAX_WIDTH || col < 0)
@@ -68,6 +76,8 @@ public class BarcodeImage implements Cloneable {
 		return true;
 	}
 
+	// Checks to see if image is too large or null.
+	// Returns false if thats the case
 	private Boolean checkImageSize(String[] data) {
 		if (data.length >= BarcodeImage.MAX_HEIGHT || data == null)
 			return false;
@@ -79,6 +89,9 @@ public class BarcodeImage implements Cloneable {
 	}
 
 
+	// Error checking for lost data from the trim() method
+	// Could be implemented in the for loop above, but this
+	// was easier for me at the time and runs quick-enough.
 	private void falseParityCC(String[] strData) {
 		int width = strData[strData.length-1].length();
 		for (int i = 0; i < strData.length; ++i){
@@ -90,16 +103,12 @@ public class BarcodeImage implements Cloneable {
 
 
 
+	// Helper function, inserts the string into the Boolean
+	// Format required for this data_image
 	private void insertImageData(String[] imgData) {
-		int start = BarcodeImage.MAX_HEIGHT - imgData.length;
-		int imgDataWidth = imgData[imgData.length-1].length();
-
-		this.actualWidth = imgDataWidth;
-		this.topLeftStart = start;
-
-		for (int i = start; i < BarcodeImage.MAX_HEIGHT; ++i)
-			for (int k = 0; k < imgDataWidth; ++k) {
-				if (imgData[i-start].charAt(k) == ' ') {
+		for (int i = this.start; i < BarcodeImage.MAX_HEIGHT; ++i)
+			for (int k = 0; k < this.width; ++k) {
+				if (imgData[i-this.start].charAt(k) == ' ') {
 					this.image_data[i][k] = false;
 				} else {
 					this.image_data[i][k] = true;
@@ -109,9 +118,12 @@ public class BarcodeImage implements Cloneable {
 	}
 
 
+	// debug help... never actually used it except to see if
+	// the displayToConsole function actually worked...
+	// May be useful in the future though.
 	public void displayToConsole() {
-		for (int i = topLeftStart; i < MAX_HEIGHT; ++i){
-			for (int k = 0; k < actualWidth; ++k){
+		for (int i = this.start; i < MAX_HEIGHT; ++i){
+			for (int k = 0; k < width; ++k){
 				if (this.image_data[i][k])
 					System.out.print('*');
 				else
@@ -119,6 +131,21 @@ public class BarcodeImage implements Cloneable {
 			}
 			System.out.println();
 		}
+	}
+
+
+	private void computeSignalWidthAndScanningStart(String[] imgData) {
+		this.start = BarcodeImage.MAX_HEIGHT - imgData.length;
+		this.width = imgData[imgData.length-1].length();
+	}
+
+
+	// I still think a copy-constructor is a better implementation
+	// The fact that clone() can return a CloneNotSupportedException
+	// is proof that this function CAN be broken.
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		return super.clone();
 	}
 
 }

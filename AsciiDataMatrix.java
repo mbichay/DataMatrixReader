@@ -1,6 +1,6 @@
 
 
-public class AsciiDataMatrix.java {
+public class AsciiDataMatrix {
 
 	public static void main(String[] args) {
 		String[] sImageIn =
@@ -61,12 +61,14 @@ public class AsciiDataMatrix.java {
       dm.translateImageToText();
       dm.displayTextToConsole();
       dm.displayImageToConsole();
-      
+     /* 
       // create your own message
       dm.readText("What a great resume builder this is!");
       dm.generateImageFromText();
       dm.displayTextToConsole();
       dm.displayImageToConsole();
+
+      */
 	}
 
 
