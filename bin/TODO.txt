@@ -1,0 +1,43 @@
+TODO:
+
+Please read through my comments, I can help explain any code.
+
+GenerateImageFromText function has not been implemented
+
+Also, I didn't read the instructions before starting and I made
+the BarcodeImage class do all of the cropping / cleaning of the
+image. It should be moved into the cleanImage function inside of
+DataMatrix. This isn't a big deal but I'm sure he'll take off points.
+I didn't look much into how that could be done, but it shouldn't be too bad.
+
+Also: The private int computeSignalWidth()/Height() functions are nonsensicle.
+If you move the cleanImage function over, this should also be moved over propperly.
+
+PartityCC()
+The cleaning happens in a special way in the BarcodeImage class. It uses the trim()
+on the string, then it figures out the actual width of it by looking at the bottom border
+and adds spaces until it equals the actual width of the bottom border. The trim() statement
+cut off the spaces at the end, but was a simple way for removing extranious spaces.
+
+
+
+
+
+
+
+
+Also... jesus, I'm ashamed, I implemented a stupid switch statement
+for the 128,64,32,16... values because I didn't iterate backwards. If someone
+wants to change that and remove the key() function, that would be awesome. It
+would be nicer to have it done like 2^iterator for the value instead of that
+fugly switch case.
+
+
+
+
+
+Comments are crap, could be better
+
+
+
+Also, please someone read over the spec and look for stuff we've missed.
