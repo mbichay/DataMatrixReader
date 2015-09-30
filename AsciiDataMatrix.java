@@ -1,8 +1,17 @@
+/*
+	Module #4
+	CST 338
+		Matthew Bichay
+		Julia Diliberto
+		Vanessa Ulloa
+		James O'Dea
+*/
 
+public class AsciiDataMatrix 
+{
 
-public class AsciiDataMatrix {
-
-	public static void main(String[] args) {
+	public static void main(String[] args) 
+	{
 		String[] sImageIn =
 	      {
 	         "                                               ",
@@ -61,15 +70,30 @@ public class AsciiDataMatrix {
       dm.translateImageToText();
       dm.displayTextToConsole();
       dm.displayImageToConsole();
-     /* 
+     
       // create your own message
       dm.readText("What a great resume builder this is!");
       dm.generateImageFromText();
       dm.displayTextToConsole();
       dm.displayImageToConsole();
+     
+      // vanessa test
+      dm.readText("Vanessa was here");
+      dm.generateImageFromText();
+      dm.displayTextToConsole();
+      dm.displayImageToConsole();
+      
+      dm.readText("Vanessa was there");
+      dm.generateImageFromText();
+      dm.displayTextToConsole();
+      dm.displayImageToConsole();
+      
+      dm.readText("Vanessa was everywhere");
+      dm.generateImageFromText();
+      dm.displayTextToConsole();
+      dm.displayImageToConsole();
+      
+	}//	end main()
 
-      */
-	}
 
-
-}
+}//	end AsciiDataMatrix class
